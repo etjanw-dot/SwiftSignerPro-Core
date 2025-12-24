@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftSigner Pro - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #030014;
+            --bg-secondary: #0a0a1a;
+            --bg-card: rgba(15, 15, 35, 0.6);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-primary: #ffffff;
+            --text-secondary: #8b8b9e;
+            --accent-primary: #F05138;
+            --accent-secondary: #FA2A48;
+            --accent-glow: rgba(240, 81, 56, 0.4);
+            --purple-accent: #8B5CF6;
+            --blue-accent: #3B82F6;
+            --green-accent: #10B981;
+            --pink-accent: #EC4899;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bg-pattern::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(240, 81, 56, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 40%);
+            animation: bgMove 20s ease-in-out infinite;
+        }
+
+        @keyframes bgMove {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(2%, 2%) rotate(1deg);
+            }
+
+            66% {
+                transform: translate(-1%, 1%) rotate(-1deg);
+            }
+        }
+
+        /* Grid Pattern Overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Premium Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, rgba(10, 10, 30, 0.95) 0%, rgba(5, 5, 20, 0.98) 100%);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 24px 32px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: white;
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text .brand {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text .pro-badge {
+            font-size: 0.65rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--purple-accent), var(--pink-accent));
+            padding: 2px 8px;
+            border-radius: 4px;
+            width: fit-content;
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 0 12px;
+        }
+
+        .nav-section {
+            margin-bottom: 28px;
+        }
+
+        .nav-section-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-secondary);
+            padding: 0 16px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            margin-bottom: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: linear-gradient(90deg, var(--accent-primary), transparent);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        .nav-item:hover::before {
+            width: 3px;
+            opacity: 1;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(240, 81, 56, 0.15), rgba(139, 92, 246, 0.1));
+            color: var(--text-primary);
+            border: 1px solid rgba(240, 81, 56, 0.2);
+        }
+
+        .nav-item.active::before {
+            width: 3px;
+            opacity: 1;
+        }
+
+        .nav-item i {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-item.active i {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* User Section */
+        .sidebar-user {
+            padding: 20px 16px;
+            margin: 0 12px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.05));
+            border: 1px solid rgba(139, 92, 246, 0.15);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--purple-accent), var(--pink-accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .user-plan {
+            font-size: 0.7rem;
+            color: var(--purple-accent);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 32px 40px;
+            position: relative;
+        }
+
+        /* Welcome Hero Section */
+        .welcome-hero {
+            background: linear-gradient(135deg,
+                    rgba(240, 81, 56, 0.12) 0%,
+                    rgba(139, 92, 246, 0.08) 50%,
+                    rgba(59, 130, 246, 0.06) 100%);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(240, 81, 56, 0.2) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--green-accent);
+            margin-bottom: 16px;
+        }
+
+        .welcome-badge i {
+            font-size: 0.7rem;
+        }
+
+        .welcome-hero h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff 0%, #a5a5a5 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .welcome-hero p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .stat-card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .stat-card-icon.blue {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05));
+            color: var(--blue-accent);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+        }
+
+        .stat-card-icon.orange {
+            background: linear-gradient(135deg, rgba(240, 81, 56, 0.2), rgba(240, 81, 56, 0.05));
+            color: var(--accent-primary);
+            box-shadow: 0 8px 24px rgba(240, 81, 56, 0.2);
+        }
+
+        .stat-card-icon.purple {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.05));
+            color: var(--purple-accent);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-trend {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--green-accent);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        /* Devices Section */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, var(--accent-primary), var(--purple-accent));
+            border-radius: 2px;
+        }
+
+        .add-device-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .add-device-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 32px var(--accent-glow);
+        }
+
+        .devices-container {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .device-row {
+            display: flex;
+            align-items: center;
+            padding: 24px 28px;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .device-row:last-child {
+            border-bottom: none;
+        }
+
+        .device-row:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .device-icon-wrapper {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--green-accent);
+            margin-right: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .device-icon-wrapper.expired {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.15), rgba(244, 67, 54, 0.05));
+            color: #f44336;
+            border-color: rgba(244, 67, 54, 0.2);
+        }
+
+        .device-info {
+            flex: 1;
+        }
+
+        .device-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .device-udid {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: 'Monaco', 'Consolas', monospace;
+        }
+
+        .device-status {
+            text-align: right;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--green-accent);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-badge.expired {
+            background: rgba(244, 67, 54, 0.15);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .device-expiry {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+        }
+
+        .empty-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 28px;
+            font-size: 2.5rem;
+            color: var(--purple-accent);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .empty-state h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+        }
+
+        .modal-content {
+            background: linear-gradient(180deg, rgba(20, 20, 40, 0.98) 0%, rgba(10, 10, 25, 0.98) 100%);
+            border-radius: 24px;
+            padding: 36px;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            z-index: 1001;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 0 4px rgba(240, 81, 56, 0.1);
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        .modal-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #fff;
+            border: none;
+            padding: 18px;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .modal-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px var(--accent-glow);
+        }
+
+        .modal-error {
+            color: #f44336;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(244, 67, 54, 0.1);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .modal-error.visible {
+            display: block;
+        }
+
+        @media (max-width: 1100px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="dashboard-container" id="app">
+        <!-- Content populated via JS -->
+    </div>
+
+    <!-- Add Device Modal -->
+    <div class="modal" id="add-device-modal">
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Register New Device</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="add-device-form">
+                <div class="form-group">
+                    <label>Device UDID</label>
+                    <input type="text" id="new-udid" placeholder="00000000-0000000000000000" required>
+                    <div class="form-hint">Enter the UDID from your iOS device settings</div>
+                </div>
+                <div class="form-group">
+                    <label>Device Name</label>
+                    <input type="text" id="new-device-name" placeholder="e.g. My iPhone 15 Pro">
+                    <div class="form-hint">Optional - helps you identify this device</div>
+                </div>
+                <div class="modal-error" id="modal-error"></div>
+                <button type="submit" class="modal-submit">
+                    <i class="fa-solid fa-plus"></i> Register Device
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://eyufnmqchlgiqnesgsdi.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_o8Svinw36oSV1eXXpyyEJQ_VTAEoxnR';
+
+        let currentUser = null;
+        let userDevices = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const email = localStorage.getItem('swiftsign_email');
+            const isLoggedIn = localStorage.getItem('swiftsign_logged_in') === 'true';
+
+            if (!isLoggedIn || !email) {
+                window.location.href = 'login.html';
+            } else {
+                currentUser = { email };
+                loadUserData(email);
+            }
+        });
+
+        async function loadUserData(email) {
+            try {
+                // Use registered_udids table (the existing table in Supabase)
+                let url = `${SUPABASE_URL}/rest/v1/registered_udids?email=eq.${encodeURIComponent(email)}&select=*`;
+
+                const response = await fetch(url, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+
+                userDevices = await response.json() || [];
+                renderDashboard();
+            } catch (err) {
+                console.error('Error:', err);
+                renderDashboard();
+            }
+        }
+
+        function renderDashboard() {
+            const planName = (localStorage.getItem('swiftsign_plan') || 'Free').toUpperCase();
+            const usedDevices = userDevices.length;
+            const maxDevices = getMaxDevices();
+            const remaining = maxDevices - usedDevices;
+            const userName = currentUser.email.split('@')[0];
+
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <div class="sidebar-header">
+                        <div class="sidebar-logo">
+                            <div class="logo-icon">
+                                <i class="fa-brands fa-swift"></i>
+                            </div>
+                            <div class="logo-text">
+                                <span class="brand">SwiftSigner</span>
+                                <span class="pro-badge">Pro Edition</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <nav class="sidebar-nav">
+                        <div class="nav-section">
+                            <div class="nav-section-title">Dashboard</div>
+                            <div class="nav-item active">
+                                <i class="fa-solid fa-sparkles"></i>
+                                <span>Overview</span>
+                            </div>
+                            <a href="usage.html" class="nav-item">
+                                <i class="fa-solid fa-microchip"></i>
+                                <span>Usage & Devices</span>
+                            </a>
+                        </div>
+                        
+                        <div class="nav-section">
+                            <div class="nav-section-title">Quick Links</div>
+                            <a href="https://www.mediafire.com/file_premium/zw97xhtwq0sn1ta/SwiftSignerProPublicRelase0.25.ipa/file" target="_blank" class="nav-item" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05)); border: 1px solid rgba(16, 185, 129, 0.2);">
+                                <i class="fa-solid fa-download" style="color: #10B981;"></i>
+                                <span>Download IPA</span>
+                            </a>
+                            <a href="index.html" class="nav-item">
+                                <i class="fa-solid fa-house"></i>
+                                <span>Back to Home</span>
+                            </a>
+                            <div class="nav-item" onclick="logout()">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                <span>Sign Out</span>
+                            </div>
+                        </div>
+                    </nav>
+                    
+                    <div class="sidebar-user">
+                        <div class="user-info">
+                            <div class="user-avatar">${userName.charAt(0).toUpperCase()}</div>
+                            <div class="user-details">
+                                <div class="user-name">${userName}</div>
+                                <div class="user-plan">${planName} Plan</div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <!-- Welcome Hero -->
+                    <div class="welcome-hero">
+                        <div class="welcome-content">
+                            <div class="welcome-badge">
+                                <i class="fa-solid fa-circle-check"></i>
+                                Account Active
+                            </div>
+                            <h1>Welcome back, ${userName}!</h1>
+                            <p>Manage your registered devices and monitor your signing activity from this dashboard.</p>
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-card-icon blue">
+                                <i class="fa-solid fa-mobile-screen-button"></i>
+                            </div>
+                            <div class="stat-value">${usedDevices}</div>
+                            <div class="stat-label">Active Devices</div>
+                            ${usedDevices > 0 ? '<div class="stat-trend"><i class="fa-solid fa-circle-check"></i> Registered</div>' : ''}
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-card-icon orange">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </div>
+                            <div class="stat-value">${remaining}</div>
+                            <div class="stat-label">Slots Remaining</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-card-icon purple">
+                                <i class="fa-solid fa-crown"></i>
+                            </div>
+                            <div class="stat-value" style="font-size: 1.6rem;">${planName}</div>
+                            <div class="stat-label">Current Plan</div>
+                        </div>
+                    </div>
+
+                    <!-- Devices Section -->
+                    <div class="section-header">
+                        <h2 class="section-title">Registered Devices</h2>
+                        <button class="add-device-btn" onclick="openModal()">
+                            <i class="fa-solid fa-plus"></i>
+                            Add Device
+                        </button>
+                    </div>
+
+                    <div class="devices-container">
+                        ${userDevices.length > 0 ? userDevices.map(d => renderDeviceRow(d)).join('') : renderEmptyState()}
+                    </div>
+                </main>
+            `;
+        }
+
+        function renderDeviceRow(device) {
+            // Calculate expiry date - fallback to registered_at + 365 days if expires_at is null
+            let expiryDate;
+            if (device.expires_at) {
+                expiryDate = new Date(device.expires_at);
+            } else if (device.registered_at) {
+                expiryDate = new Date(device.registered_at);
+                expiryDate.setDate(expiryDate.getDate() + 365);
+            } else {
+                expiryDate = new Date();
+                expiryDate.setDate(expiryDate.getDate() + 365);
+            }
+
+            const isActive = expiryDate > new Date();
+            const model = device.device_model || device.device_name || 'iPhone';
+            const expiry = expiryDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            const daysLeft = Math.ceil((expiryDate - new Date()) / (1000 * 60 * 60 * 24));
+
+            return `
+            <div class="device-row">
+                <div class="device-icon-wrapper ${isActive ? '' : 'expired'}">
+                    <i class="fa-brands fa-apple"></i>
+                </div>
+                <div class="device-info">
+                    <div class="device-name">${model}</div>
+                    <div class="device-udid">${device.udid}</div>
+                </div>
+                <div class="device-status">
+                    <span class="status-badge ${isActive ? 'active' : 'expired'}">
+                        <i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i>
+                        ${isActive ? 'Active' : 'Expired'}
+                    </span>
+                    <div class="device-expiry">${isActive ? daysLeft + ' days remaining' : 'Expired ' + expiry}</div>
+                </div>
+            </div>
+            `;
+        }
+
+        function renderEmptyState() {
+            return `
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fa-solid fa-mobile-screen"></i>
+                </div>
+                <h3>No Devices Registered</h3>
+                <p>Register your first device to start signing apps on your iPhone or iPad.</p>
+                <button class="add-device-btn" onclick="openModal()">
+                    <i class="fa-solid fa-plus"></i>
+                    Register Device
+                </button>
+            </div>
+            `;
+        }
+
+        function getMaxDevices() {
+            const plan = localStorage.getItem('swiftsign_plan') || 'free';
+            if (plan.includes('pro_plus')) return 2;
+            if (plan.includes('ultimate')) return 5;
+            if (plan.includes('unlimited')) return 99;
+            return 1;
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        function openModal() {
+            document.getElementById('add-device-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('add-device-modal').classList.remove('active');
+            document.getElementById('modal-error').classList.remove('visible');
+            document.getElementById('modal-error').textContent = '';
+        }
+
+        document.getElementById('add-device-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const udid = document.getElementById('new-udid').value.trim();
+            const name = document.getElementById('new-device-name').value.trim() || 'My Device';
+            const accountId = localStorage.getItem('swiftsign_account_id');
+
+            const btn = e.target.querySelector('button');
+            const errorEl = document.getElementById('modal-error');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registering...';
+            errorEl.classList.remove('visible');
+
+            try {
+                const now = new Date();
+                const email = currentUser?.email || localStorage.getItem('swiftsign_email');
+
+                if (!email) {
+                    errorEl.textContent = 'Please log in again.';
+                    errorEl.classList.add('visible');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-plus"></i> Register Device';
+                    return;
+                }
+
+                // Calculate expiry (365 days from now)
+                const expiry = new Date(now);
+                expiry.setDate(expiry.getDate() + 365);
+
+                // Payload with expiry date
+                const payload = {
+                    udid: udid,
+                    email: email,
+                    device_name: name,
+                    device_type: 'iPhone',
+                    registered_at: now.toISOString(),
+                    expires_at: expiry.toISOString(),
+                    is_free_preorder: true
+                };
+
+                console.log('Sending payload:', payload);
+
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/registered_udids`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok || res.status === 201) {
+                    closeModal();
+                    loadUserData(currentUser.email);
+                } else {
+                    const errorData = await res.json().catch(() => ({}));
+                    console.error('Supabase error:', res.status, errorData);
+                    errorEl.textContent = errorData.message || 'Failed to register. Check console for details.';
+                    errorEl.classList.add('visible');
+                }
+            } catch (err) {
+                console.error(err);
+                errorEl.textContent = 'Network error. Please try again.';
+                errorEl.classList.add('visible');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-plus"></i> Register Device';
+            }
+        });
+    </script>
+</body>
+
+</html>

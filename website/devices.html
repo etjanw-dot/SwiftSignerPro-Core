@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftSigner Pro - Devices</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar - Same as Dashboard */
+        .sidebar {
+            width: 280px;
+            background: #0a0a0a;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 24px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 16px;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-logo i {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #F05138, #FA2A48);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sidebar-logo span {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .sidebar-logo .pro {
+            font-size: 0.65rem;
+            background: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #999;
+            margin-left: 4px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 0 12px;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #999;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(240, 81, 56, 0.2), rgba(250, 42, 72, 0.2));
+            color: #F05138;
+        }
+
+        .nav-item i {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* User Section */
+        .sidebar-user {
+            padding: 16px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: auto;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F05138, #FA2A48);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .user-plan {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 32px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header-content h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header-content p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* Usage Table Style */
+        .table-container {
+            background: #111;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .devices-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .devices-table th {
+            text-align: left;
+            padding: 16px 24px;
+            color: #666;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: #1a1a1a;
+        }
+
+        .devices-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+            color: #ddd;
+        }
+
+        .devices-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .devices-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .udid-cell {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: #888 !important;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-badge.active {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+        }
+
+        .status-badge.expired {
+            background: rgba(244, 67, 54, 0.1);
+            color: #f44336;
+        }
+
+        .model-icon {
+            margin-right: 8px;
+            color: #666;
+        }
+
+        .add-device-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-device-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 8px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .devices-table tr:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            color: #fff;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fa-brands fa-swift"></i>
+                    <span>SwiftSigner <span class="pro">Pro</span></span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Dashboard</div>
+                    <a href="dashboard.html" class="nav-item">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Overview</span>
+                    </a>
+                    <a href="devices.html" class="nav-item active">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        <span>Devices</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Support</div>
+                    <a href="index.html" class="nav-item">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Back to Home</span>
+                    </a>
+                    <div class="nav-item" onclick="logout()">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Sign Out</span>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <div class="user-details">
+                        <div class="user-name" id="user-name">User</div>
+                        <div class="user-plan" id="user-plan">Pro</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <div class="header-content">
+                    <h1>Devices</h1>
+                    <p>Manage your registered devices and view usage details.</p>
+                </div>
+                <!-- Optional: Add button header right -->
+            </div>
+
+            <div class="table-container">
+                <table class="devices-table">
+                    <thead>
+                        <tr>
+                            <th>Device Model</th>
+                            <th>UDID</th>
+                            <th>iOS Version</th>
+                            <th>Registered</th>
+                            <th>Expires</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="devices-list">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://eyufnmqchlgiqnesgsdi.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_o8Svinw36oSV1eXXpyyEJQ_VTAEoxnR';
+
+        // Helper to format date
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { medium: 'short' });
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Could show toast
+            });
+        }
+
+        async function loadDevices() {
+            const email = localStorage.getItem('swiftsign_email');
+
+            if (!email) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Update user info
+            document.getElementById('user-name').textContent = email.split('@')[0];
+            document.getElementById('user-avatar').textContent = email.charAt(0).toUpperCase();
+
+            const devicesList = document.getElementById('devices-list');
+            devicesList.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#666;">Loading devices...</td></tr>';
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/registered_udids?email=eq.${encodeURIComponent(email)}&select=*`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    devicesList.innerHTML = data.map(device => {
+                        const isActive = new Date(device.expires_at) > new Date();
+                        const modelName = device.device_name || 'iPhone';
+                        const version = device.ios_version || 'Unknown';
+
+                        return `
+                        <tr>
+                            <td>
+                                <i class="fa-solid fa-mobile-screen model-icon"></i>
+                                ${modelName}
+                            </td>
+                            <td class="udid-cell">
+                                ${device.udid}
+                                <button class="copy-btn" onclick="copyToClipboard('${device.udid}')">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </td>
+                            <td>${version}</td>
+                            <td>${formatDate(device.registered_at)}</td>
+                            <td>${formatDate(device.expires_at)}</td>
+                            <td>
+                                <span class="status-badge ${isActive ? 'active' : 'expired'}">
+                                    <i class="fa-solid fa-circle" style="font-size:0.5rem"></i>
+                                    ${isActive ? 'Active' : 'Expired'}
+                                </span>
+                            </td>
+                        </tr>
+                        `;
+                    }).join('');
+                } else {
+                    devicesList.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#666; padding: 40px;">No devices found.</td></tr>';
+                }
+            } catch (err) {
+                console.error('Error loading devices:', err);
+                devicesList.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#f44336;">Failed to load devices.</td></tr>';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('swiftsign_email');
+            localStorage.removeItem('swiftsign_logged_in');
+            window.location.href = 'login.html';
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', loadDevices);
+    </script>
+</body>
+
+</html>

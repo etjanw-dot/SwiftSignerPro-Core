@@ -1,0 +1,9 @@
+.DS_Store
+packages
+Payload
+*UserInterfaceState.xcuserstate
+xcuserdata/
+deps
+.build
+# Local Netlify folder
+.netlify

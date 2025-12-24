@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftSigner Pro - Usage & Devices</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #030014;
+            --bg-secondary: #0a0a1a;
+            --bg-card: rgba(15, 15, 35, 0.6);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-primary: #ffffff;
+            --text-secondary: #8b8b9e;
+            --accent-primary: #F05138;
+            --accent-secondary: #FA2A48;
+            --accent-glow: rgba(240, 81, 56, 0.4);
+            --purple-accent: #8B5CF6;
+            --blue-accent: #3B82F6;
+            --green-accent: #10B981;
+            --pink-accent: #EC4899;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bg-pattern::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(240, 81, 56, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 40%);
+            animation: bgMove 20s ease-in-out infinite;
+        }
+
+        @keyframes bgMove {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(2%, 2%) rotate(1deg);
+            }
+
+            66% {
+                transform: translate(-1%, 1%) rotate(-1deg);
+            }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, rgba(10, 10, 30, 0.95) 0%, rgba(5, 5, 20, 0.98) 100%);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 24px 32px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: white;
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text .brand {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text .pro-badge {
+            font-size: 0.65rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--purple-accent), var(--pink-accent));
+            padding: 2px 8px;
+            border-radius: 4px;
+            width: fit-content;
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 0 12px;
+        }
+
+        .nav-section {
+            margin-bottom: 28px;
+        }
+
+        .nav-section-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-secondary);
+            padding: 0 16px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            margin-bottom: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: linear-gradient(90deg, var(--accent-primary), transparent);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        .nav-item:hover::before {
+            width: 3px;
+            opacity: 1;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(240, 81, 56, 0.15), rgba(139, 92, 246, 0.1));
+            color: var(--text-primary);
+            border: 1px solid rgba(240, 81, 56, 0.2);
+        }
+
+        .nav-item.active::before {
+            width: 3px;
+            opacity: 1;
+        }
+
+        .nav-item i {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-item.active i {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* User Section */
+        .sidebar-user {
+            padding: 20px 16px;
+            margin: 0 12px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.05));
+            border: 1px solid rgba(139, 92, 246, 0.15);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--purple-accent), var(--pink-accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .user-plan {
+            font-size: 0.7rem;
+            color: var(--purple-accent);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 32px 40px;
+            position: relative;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff 0%, #a5a5a5 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Table Container */
+        .table-container {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .devices-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .devices-table th {
+            text-align: left;
+            padding: 20px 28px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .devices-table td {
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .devices-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .devices-table tbody tr {
+            transition: all 0.2s;
+        }
+
+        .devices-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .devices-table tbody tr:hover td {
+            color: #fff;
+        }
+
+        .device-model-cell {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .device-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: var(--blue-accent);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .udid-cell {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary) !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        .devices-table tr:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--green-accent);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        .status-badge.expired {
+            background: rgba(244, 67, 54, 0.12);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.25);
+        }
+
+        .empty-row td {
+            text-align: center;
+            padding: 80px 40px !important;
+            color: var(--text-secondary) !important;
+        }
+
+        .empty-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 2rem;
+            color: var(--purple-accent);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .empty-content h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .empty-content p {
+            margin-bottom: 24px;
+        }
+
+        .register-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px var(--accent-glow);
+            text-decoration: none;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px var(--accent-glow);
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .devices-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-icon">
+                        <i class="fa-brands fa-swift"></i>
+                    </div>
+                    <div class="logo-text">
+                        <span class="brand">SwiftSigner</span>
+                        <span class="pro-badge">Pro Edition</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Dashboard</div>
+                    <a href="dashboard.html" class="nav-item">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span>Overview</span>
+                    </a>
+                    <a href="usage.html" class="nav-item active">
+                        <i class="fa-solid fa-microchip"></i>
+                        <span>Usage & Devices</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Quick Links</div>
+                    <a href="https://www.mediafire.com/file_premium/zw97xhtwq0sn1ta/SwiftSignerProPublicRelase0.25.ipa/file"
+                        target="_blank" class="nav-item"
+                        style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05)); border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <i class="fa-solid fa-download" style="color: #10B981;"></i>
+                        <span>Download IPA</span>
+                    </a>
+                    <a href="index.html" class="nav-item">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Back to Home</span>
+                    </a>
+                    <div class="nav-item" onclick="logout()">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span>Sign Out</span>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <div class="user-details">
+                        <div class="user-name" id="user-name">User</div>
+                        <div class="user-plan" id="user-plan">FREE Plan</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1>Usage & Devices</h1>
+                <p>View all your registered devices and their status in one place.</p>
+            </div>
+
+            <div class="table-container">
+                <table class="devices-table">
+                    <thead>
+                        <tr>
+                            <th>Device</th>
+                            <th>UDID</th>
+                            <th>iOS Version</th>
+                            <th>Registered</th>
+                            <th>Expires</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="devices-list">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://eyufnmqchlgiqnesgsdi.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_o8Svinw36oSV1eXXpyyEJQ_VTAEoxnR';
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            return new Date(dateString).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                setTimeout(() => btn.innerHTML = original, 1500);
+            });
+        }
+
+        async function loadDevices() {
+            const email = localStorage.getItem('swiftsign_email');
+            const accountId = localStorage.getItem('swiftsign_account_id');
+
+            if (!email) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Update user info
+            const userName = email.split('@')[0];
+            document.getElementById('user-name').textContent = userName;
+            document.getElementById('user-avatar').textContent = userName.charAt(0).toUpperCase();
+            document.getElementById('user-plan').textContent = (localStorage.getItem('swiftsign_plan') || 'FREE').toUpperCase() + ' Plan';
+
+            const devicesList = document.getElementById('devices-list');
+            devicesList.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:60px; color:#666;">Loading devices...</td></tr>';
+
+            try {
+                // Always use registered_udids table (the existing table)
+                let url = `${SUPABASE_URL}/rest/v1/registered_udids?email=eq.${encodeURIComponent(email)}&select=*`;
+
+                const response = await fetch(url, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    devicesList.innerHTML = data.map(device => {
+                        const isActive = new Date(device.expires_at) > new Date();
+                        const modelName = device.device_model || device.device_name || 'iPhone';
+                        const version = device.ios_version || 'Unknown';
+                        const registeredAt = device.registered_at || device.created_at;
+
+                        return `
+                        <tr>
+                            <td>
+                                <div class="device-model-cell">
+                                    <div class="device-icon">
+                                        <i class="fa-brands fa-apple"></i>
+                                    </div>
+                                    <span>${modelName}</span>
+                                </div>
+                            </td>
+                            <td class="udid-cell">
+                                <span>${device.udid}</span>
+                                <button class="copy-btn" onclick="copyToClipboard('${device.udid}', this)">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                            </td>
+                            <td>${version}</td>
+                            <td>${formatDate(registeredAt)}</td>
+                            <td>${formatDate(device.expires_at)}</td>
+                            <td>
+                                <span class="status-badge ${isActive ? 'active' : 'expired'}">
+                                    <i class="fa-solid fa-circle" style="font-size:0.4rem"></i>
+                                    ${isActive ? 'Active' : 'Expired'}
+                                </span>
+                            </td>
+                        </tr>
+                        `;
+                    }).join('');
+                } else {
+                    devicesList.innerHTML = `
+                    <tr class="empty-row">
+                        <td colspan="6">
+                            <div class="empty-content">
+                                <div class="empty-icon">
+                                    <i class="fa-solid fa-mobile-screen"></i>
+                                </div>
+                                <h3>No Devices Yet</h3>
+                                <p>Register your first device to start signing apps.</p>
+                                <a href="dashboard.html" class="register-btn">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Register Device
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                }
+            } catch (err) {
+                console.error('Error loading devices:', err);
+                devicesList.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:60px; color:#f44336;">Failed to load devices</td></tr>';
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDevices);
+    </script>
+</body>
+
+</html>

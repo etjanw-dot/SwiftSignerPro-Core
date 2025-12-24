@@ -1,0 +1,18 @@
+{
+    "name": "ethsign-udid-website",
+    "version": "1.0.0",
+    "description": "UDID retrieval website for EthSign iOS app",
+    "main": "index.html",
+    "scripts": {
+        "dev": "netlify dev",
+        "build": "echo 'No build needed'",
+        "deploy": "netlify deploy --prod"
+    },
+    "keywords": [
+        "udid",
+        "ios",
+        "ethsign"
+    ],
+    "author": "EthSign",
+    "license": "MIT"
+}

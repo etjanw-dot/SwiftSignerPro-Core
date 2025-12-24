@@ -1,0 +1,10 @@
+🔨 Building Ksign...
+📝 Log file: build_log_20251224_080509.txt
+⏰ Started: Wed Dec 24 08:05:09 PST 2025
+
+
+❌ Build FAILED with status 138
+
+📋 Errors:
+
+⏰ Finished: Wed Dec 24 08:05:13 PST 2025

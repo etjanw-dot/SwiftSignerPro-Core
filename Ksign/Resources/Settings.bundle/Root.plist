@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<!-- App Info Group -->
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>SwiftSigner Pro</string>
+			<key>FooterText</key>
+			<string>Sign and install iOS apps directly on your device.</string>
+		</dict>
+		<!-- Version Info -->
+		<dict>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Version</string>
+			<key>Key</key>
+			<string>version_preference</string>
+			<key>DefaultValue</key>
+			<string>1.0.0</string>
+		</dict>
+		<!-- Appearance Group -->
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Appearance</string>
+		</dict>
+		<!-- Theme Selection -->
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Theme</string>
+			<key>Key</key>
+			<string>app_theme</string>
+			<key>DefaultValue</key>
+			<string>system</string>
+			<key>Titles</key>
+			<array>
+				<string>System</string>
+				<string>Light</string>
+				<string>Dark</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>system</string>
+				<string>light</string>
+				<string>dark</string>
+			</array>
+		</dict>
+		<!-- Signing Group -->
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Signing</string>
+		</dict>
+		<!-- Auto-remove after signing -->
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Remove After Signing</string>
+			<key>Key</key>
+			<string>SwiftSignerPro.removeAppAfterSigned</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<!-- Show signing logs -->
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Show Signing Logs</string>
+			<key>Key</key>
+			<string>SwiftSignerPro.signingLogs</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<!-- Server Group -->
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Server</string>
+		</dict>
+		<!-- Server Method -->
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Installation Method</string>
+			<key>Key</key>
+			<string>SwiftSignerPro.serverMethod</string>
+			<key>DefaultValue</key>
+			<integer>0</integer>
+			<key>Titles</key>
+			<array>
+				<string>iTunes Services URL</string>
+				<string>In-App Browser</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<integer>0</integer>
+				<integer>1</integer>
+			</array>
+		</dict>
+		<!-- Library Group -->
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Library</string>
+		</dict>
+		<!-- Export using share sheet -->
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Use Share Sheet for Export</string>
+			<key>Key</key>
+			<string>SwiftSignerPro.useShareSheetForArchiving</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<!-- Acknowledgements -->
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>About</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>Acknowledgements</string>
+			<key>File</key>
+			<string>thewonderofyou.Feather</string>
+		</dict>
+	</array>
+	<key>StringsTable</key>
+	<string>Root</string>
+</dict>
+</plist>
